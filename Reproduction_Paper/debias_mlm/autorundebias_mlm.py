@@ -39,12 +39,16 @@ class TextDataset(Dataset):
 def main():
     parser=argparse.ArgumentParser()
     parser.add_argument(
-        "--data-file",
+        "--data_file",
         default=None,
         type=str,
         required=True,
         help="the input data file."
     )
+    parser.add_argument(
+        "--model_type", type=str, required=True, help="The model architecture to be trained or fine-tuned.",
+    )
+
     parser.add_argument(
         "--output_dir",
         type=str,
@@ -68,7 +72,7 @@ def main():
         help="Whether to continue from latest checkpoint in output_dir"
     )
     parser.add_argument(
-        "--loss-target",
+        "--loss_target",
         type=str
     )
     parser.add_argument(
@@ -81,6 +85,10 @@ def main():
         type=float,
         default=0.15,
         help="Ratio of tokens to mask for masked language modeling loss"
+    )
+    parser.add_argument(
+        "--model_name_or_path",
+        type=str,
     )
     parser.add_argument(
         "--config_name",
@@ -389,6 +397,8 @@ def main():
     data=torch.load(args.data_file)
     attributes_examples=data['attributes_examples']
     attributes_labels = data['attributes_labels']
+    # print(data.keys())
+    # exit()
     neutral_examples = data['neutral_examples']
 
     if 'neutral_labels' in data:
@@ -402,6 +412,7 @@ def main():
 
     if args.local_rank == 0:
         torch.distributed.barrier()
+    train(args,splited_data,datasets,model,original_model,tokenizer)
         
 
 
@@ -422,6 +433,8 @@ def split_data(attributes_examples, attributes_labels, neutral_examples, neutral
         idx_l=list(range(len(examples)))
         random.shuffle(idx_l)
         examples=[examples[idx] for idx in idx_l]
+        # print(len(idx_l),len(attributes_labels))
+        # exit()
         labels=[labels[idx] for idx in idx_l]
         data['train']['example'][f'attribute{i}'] = examples[args.dev_data_size:]
         data['train']['label'][f'attribute{i}'] = labels[args.dev_data_size:]
@@ -640,7 +653,7 @@ def train(args,data,datasets,model:PreTrainedModel,original_model,tokenizer:PreT
         return torch.mean(torch.sum(y*x,3))
     def mean_square(x,y,idx):
         #mean square in idx dimension
-        return torch.mean(torch.mean((y-x)**2),idx)
+        return torch.mean(torch.mean((y-x)**2,idx))
     def get_hiddens_of_model(input):
         model.zero_grad()
         if args.model_type=='roberta':
@@ -657,7 +670,7 @@ def train(args,data,datasets,model:PreTrainedModel,original_model,tokenizer:PreT
             _, _, hiddens = model.transformer(input)
         elif args.model_type == 'gpt':
             _, hiddens = model.transformer(input)
-        print(len(hiddens))
+        # print(len(hiddens))
         return hiddens
     def attribute_vector_example():
         #calculate the vi.dot(Ei) as Li from paper
@@ -767,8 +780,8 @@ def train(args,data,datasets,model:PreTrainedModel,original_model,tokenizer:PreT
         #stack the vector on dimension 2
         all_layer_hiddens=torch.stack(all_layer_hiddens,2)
         if 'neutral'!=key:
-            all_originl_hiddens=torch.stack(all_layer_original_hiddens,2)
-            all_layer_hiddens=all_originl_hiddens.detach()
+            all_original_hiddens=torch.stack(all_layer_original_hiddens,2)
+            all_original_hiddens=all_original_hiddens.detach()
             if args.token_loss:
                 original_hiddens=original_hiddens.detach()
                 token_original=token_original.detach()
@@ -784,13 +797,13 @@ def train(args,data,datasets,model:PreTrainedModel,original_model,tokenizer:PreT
             target_layer_hiddens=all_layer_hiddens[:,:,idx]
             target_layer_hiddens=target_layer_hiddens.unsqueeze(2)
             if 'neutral'!=key:
-                target_original_hiddens=all_originl_hiddens[:,:,idx]
+                target_original_hiddens=all_original_hiddens[:,:,idx]
                 target_original_hiddens=target_original_hiddens.unsqueeze(2)
             else:
-                attributes_hiddens={key:value[:,idx,:].unsqueeze(1) for key,value in attributes_hiddens.item()}
+                attributes_hiddens={key:value[:,idx,:].unsqueeze(1) for key,value in attributes_hiddens.items()}
         if args.loss_target=='sentence' or labels is None:
             #if target is sentence,set the attributes_hiddens directly
-            attributes_hiddens={key:value.unsqueeze(1) for key,value in attributes_hiddens.item()}
+            attributes_hiddens={key:value.unsqueeze(1) for key,value in attributes_hiddens.items()}
         #elif args.loss_target == 'token' and key == 'neutral':
         elif args.loss_target=='token':
             if labels.size(1)>1:
@@ -820,12 +833,13 @@ def train(args,data,datasets,model:PreTrainedModel,original_model,tokenizer:PreT
                 loss+=tmp_loss
         else:
             #loss = criterion_ms(target_layer_hiddens, target_original_hiddens)
-            loss=criterion_ms(all_layer_hiddens,all_originl_hiddens,3)
+            loss=criterion_ms(all_layer_hiddens,all_original_hiddens,3)
+            
             if args.token_loss:
                 #loss += criterion_ms(hiddens, original_hiddens, 2)
                 loss+=criterion_ms(token_predicts,token_original,2)
             loss*=beta
-
+        
         return loss
     def evaluate(model,attributes_hiddens,dev_dataloaders,prefix=""): 
         eval_output_dir=args.output_dir
@@ -861,28 +875,6 @@ def train(args,data,datasets,model:PreTrainedModel,original_model,tokenizer:PreT
         '''
 
         return eval_loss
-
-    #criterion_ms = torch.nn.MSELoss()
-    criterion_ms = mean_square
-    #criterion.train()
-    criterion_ip = inner_product
-    original_model.eval()
-    alpha,beta=args.weighted_loss
-    alpha=float(alpha)
-    beta=float(beta)
-    train_loss=0.0
-    for _ in train_iterator:
-        random.shuffle(train_distribution)
-        epoch_iterator=tqdm(train_distribution, desc="Iteration", disable=args.local_rank not in [-1, 0])
-        model.eval()
-        with torch.no_grad():
-            #take the attributes hiddens
-            attributes_hiddens=attribute_vector_example()
-            for setp,key in enumerate(epoch_iterator):
-                model.train()
-                #skip past any already trained steps if resuming training
-                if 
-        
     def save_best_model(best_loss,best_step,dev_dataloaders):
         if (args.local_rank == -1 and args.evaluate_during_training):  
             # Only evaluate when single GPU otherwise metrics may not average well
@@ -916,6 +908,74 @@ def train(args,data,datasets,model:PreTrainedModel,original_model,tokenizer:PreT
         logger.info(" best_step = %s, best loss = %s", best_step, best_loss)
 
         return best_loss, best_step
+    #criterion_ms = torch.nn.MSELoss()
+    criterion_ms = mean_square
+    #criterion.train()
+    criterion_ip = inner_product
+    original_model.eval()
+    alpha,beta=args.weighted_loss
+    alpha=float(alpha)
+    beta=float(beta)
+    train_loss=0.0
+    for _ in train_iterator:
+        random.shuffle(train_distribution)
+        epoch_iterator=tqdm(train_distribution, desc="Iteration", disable=args.local_rank not in [-1, 0])
+        model.eval()
+        with torch.no_grad():
+            #take the attributes hiddens
+            attributes_hiddens=attribute_vector_example()
+        for step,key in enumerate(epoch_iterator):
+            model.train()
+            #skip past any already trained steps if resuming training
+            if steps_trained_in_current_epoch>0:
+                steps_trained_in_current_epoch-=1
+                continue
+            loss=forward(attributes_hiddens,train_dataloaders,key)
+            # print(loss)
+            # exit()
+            if args.n_gpu>1:
+                #when multi-gpu parallel training
+                loss=loss.mean()
+            if args.gradient_accumulation_steps>1:
+                loss=loss/args.gradient_accumulation_steps
+                
+            if args.fp16:
+                with amp.scale_loss(loss, optimizer) as scaled_loss:
+                    scaled_loss.backward()
+            else:
+                loss.backward()    
+            train_loss+=loss.item() 
+            if (step + 1) % args.gradient_accumulation_steps == 0:
+                if args.fp16:
+                    torch.nn.utils.clip_grad_norm_(amp.master_params(optimizer), args.max_grad_norm)
+                else:
+                    torch.nn.utils.clip_grad_norm_(model.parameters(), args.max_grad_norm)
+                #auto regulation the optimizer and scheduler
+                optimizer.step()
+                scheduler.step()  # Update learning rate schedule
+                model.zero_grad() # initialize for next epoch 
+                original_model.zero_grad()
+                global_step += 1
+
+                if args.local_rank in [-1, 0] and args.logging_steps > 0 and global_step % args.logging_steps == 0:
+                    logger.info(" global_step = %s, train loss = %s", global_step, train_loss)
+                    train_loss = 0.0
+                    # Log metrics
+                    best_loss, best_step = save_best_model(best_loss, best_step, dev_dataloaders)
+                    dev_dataloaders, dev_example_num, dev_distribution = create_dataloader(args, dev_datasets, tokenizer, train=False)
+            if args.max_steps>0 and global_step>args.max_steps:
+                epoch_iterator.close()
+                break
+            train_dataloaders,train_example_num,train_distribution=create_dataloader(args,train_datasets,tokenizer,train=True)
+        if args.max_steps>0 and global_step>args.max_steps:
+            train_iterator.close()
+            break  
+    dev_dataloaders,dev_example_num,dev_distribution=create_dataloader(args,dev_datasets,tokenizer,train=False)
+    best_loss,best_step=save_best_model(best_loss,best_step,dev_dataloaders)        
+    if args.local_rank in [-1,0]:
+        tb_writer.close()
+
+    
 
 #use in 520
 def create_dataloader(args,datasets,tokenizer,train=False):
