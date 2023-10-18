@@ -8,6 +8,6 @@ suffix=`date +%Y%m%d`
 for f in `find ./data/ -type f -name "*.txt"`
 do
     echo "backup the file ${f}"
-    echo "backup the file $f"
+    # echo "backup the file $f"
     cp ${f} ${f}_${suffix}
 done
