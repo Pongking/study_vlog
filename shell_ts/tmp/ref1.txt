@@ -1,0 +1,14 @@
+[]Dauterman E,Feng E,Luo E,et al.DORY:An Encrypted Search System with Distributed Trust.[C]// Operating Systems Design and Implementation. 2020.
+[]S,Cai C,Qian W,et al. Searching an Encrypted Cloud Meets Blockchain: A Decentralized , Reliable and Fair Realization[C]// IEEE INFOCOM 2018 - IEEE Conference on Computer Communications. IEEE, 2018.
+[]Guangsheng, et al. “Enabling Attribute Revocation for Fine-Grained Access Control in Blockchain-IoT Systems.” IEEE Transactions on Engineering Management, Feb. 2020
+[]Tay Y , Tran V Q , Dehghani M , et al.Transformer Memory as a Differentiable Search Index[J].NeurIPS 2022.
+[]Wang, Y., Hou, Y., Wang, H., Miao, Z., Wu, S., Sun, H., … Yang, M. A Neural Corpus Indexer for Document Retrieval. NeurIPS 2022. 
+[] LYU L, HE X, LI Y. Differentially Private Representation for NLP: Formal Guarantee and An Empirical Study on Privacy and Fairness[Z]//Cornell University - arXiv. EMNLP 2020.
+[]Qu, Chen, et al. “Natural Language Understanding with Privacy-Preserving BERT.” Proceedings of the 30th ACM International Conference on Information & Knowledge Management, 2021
+[] Lee, Garam, et al. “Privacy-Preserving Text Classification on BERT Embeddings with Homomorphic Encryption.” Proceedings of the 2022 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies
+[]LYU L, HE X, LI Y. Differentially Private Representation for NLP: Formal Guarantee and An Empirical Study on Privacy and Fairness[J]. Cornell University - arXiv, 2020.
+[] COAVOUX M, NARAYAN S, COHEN ShayB. Privacy-preserving Neural Representations of Text[J]. Cornell University - arXiv, 2018.
+[] Song C, Raghunathan A. Information leakage in embedding models[C]//Proceedings of the 2020 ACM SIGSAC conference on computer and communications security. 2020: 377-390.
+[] S. Cui, X. Song, M. R. Asghar, S. D. Galbraith, and G. Russello. 2021. Privacy-preserving dynamic symmetric searchable encryption with controllable leakage. In ACM Transactions on Privacy and Security
+[] Min Xu. Armin Namavari. David Cash. Thomas Ristenpart. 2021. Searching encrypted data with sizelocked indexes. In USENIX Security.
+[] Dauterman E,Feng E,Luo E,et al.DORY:An Encrypted Search System with Distributed Trust.[C]// Operating Systems Design and Implementation. 2020.

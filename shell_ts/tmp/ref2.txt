@@ -1,0 +1,28 @@
+[] J. Cui, Y. Sun, X. U. Yan, M. Tian, and H. Zhong. 2022.Forward and backward secure searchable encryption with multi-keyword search and result verification.
+[] J. Su, L. Zhang, and Y. Mu. 2022. Ba-rmkabse:Blockchain-aided ranked multi-keyword attribute-based searchable encryption with hiding policy for smart health system. volume 132, pages 299–309.
+[] Z. Chen, A. Wu, Y. Li, Q. Xing, and S. Geng. 2021.Blockchain-enabled public key encryption with multi-keyword search in cloud computing. volume 2021.
+[] A. B. Veretennikov. 2021. Relevance ranking for proximity full-text search based on additional indexes with multi-component keys.
+[] MA Manazir Ahsan, Fahad Zaman Chowdhury, Musarat Sabilah, Ainuddin Wahid Bin Abdul Wahab, and Mohd Yamani Idna Bin Idris. An efficient fuzzy keyword matching technique for searching through encrypted cloud data. In 2017 International Conference on Research and Innovation in Information Systems (ICRIIS), pages 1–5. IEEE
+[] Zheng Hu, Hua Dai, Geng Yang, Xun Yi, and Wenjie Sheng. Semantic-based multi-keyword ranked search schemes over encrypted cloud data. Security and Communication Networks, 2022.
+[] Zhangjie Fu, Yan Wang, Xingming Sun, and Xiaosong Zhang. 2022. Semantic and secure search over encrypted outsourcing cloud based on bert. Frontiers of Computer Science, 16:1–8.
+[] angen Liu and Zhangjie Fu. 2019. Secure search service based on word2vec in the public cloud. International Journal of Computational Science and Engineering, 18(3):305–313.
+[] COAVOUX M, NARAYAN S, COHEN ShayB. Privacy-preserving Neural Representations of Text[J]. Cornell University - arXiv, 2018.
+[]Tay Y , Tran V Q , Dehghani M , et al.Transformer Memory as a Differentiable Search Index[J].NeurIPS 2022.
+[]Wang, Y., Hou, Y., Wang, H., Miao, Z., Wu, S., Sun, H., … Yang, M. A Neural Corpus Indexer for Document Retrieval. NeurIPS 2022. 
+[] CHEN X, LAKHOTIA K, O\\U{G}UZ B, et al. Salient Phrase Aware Dense Retrieval: Can a Dense Retriever Imitate a Sparse One?[J].2022.
+[] JIANG Z, GAO L, ARAKI J, et al. Retrieval as Attention: End-to-end Learning of Retrieval and Reading within a Single Transformer[J]. 2022.
+[] LYU L, HE X, LI Y. Differentially Private Representation for NLP: Formal Guarantee and An Empirical Study on Privacy and Fairness[Z]//Cornell University - arXiv. EMNLP 2020.
+[]Qu, Chen, et al. “Natural Language Understanding with Privacy-Preserving BERT.” Proceedings of the 30th ACM International Conference on Information & Knowledge Management, 2021
+[] Lee, Garam, et al. “Privacy-Preserving Text Classification on BERT Embeddings with Homomorphic Encryption.” Proceedings of the 2022 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies
+[] Privacy- and Utility-Preserving Textual Analysis via Calibrated Multivariate Perturbations[J].
+[] WARNER S L. Randomized Response: A Survey Technique for Eliminating Evasive Answer Bias[J/OL]. Journal of the American Statistical Association: 63-69.
+[]DUCHI JohnC, JORDAN MichaelI, WAINWRIGHT MartinJ. Local Privacy and Statistical Minimax Rates[J]. 
+[] Wu Y , Schuster M , Chen Z ,et al.Google's Neural Machine Translation System: Bridging the Gap between Human and Machine Translation[J]. 2016.
+[] Song C, Raghunathan A. Information leakage in embedding models[C]//Proceedings of the 2020 ACM SIGSAC conference on computer and communications security. 2020: 377-390.
+[]KWIATKOWSKI T, PALOMAKI J, REDFIELD O, et al. Natural Questions: A Benchmark for Question Answering Research[J/OL]. Transactions of the Association for Computational Linguistics, 2019: 453-466.
+[]Waswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A., ... & Polosukhin, I. (2017). Attention is all you need. In NIPS.
+[] Kenton J D M W C, Toutanova L K. Bert: Pre-training of deep bidirectional transformers for language understanding[C]//Proceedings of naacL-HLT. 2019, 1: 2.
+[]Donald Metzler, Yi Tay, Dara Bahri, and Marc Najork. Rethinking search: making domain experts out of dilettantes. In ACM SIGIR Forum, volume 55, pages 1–27. ACM New York, NY, USA, 2021.
+[]H Brendan McMahan, Daniel Ramage, Kunal Talwar, and Li Zhang. 2018. Learning differentially private recurrent language models. In International Conference on Learning Representations (ICLR).
+[]Joshi M, Chen D, Liu Y, et al. Spanbert: Improving pre-training by representing and predicting spans[J]. Transactions of the association for computational linguistics, 2020, 8: 64-77.
+[]Karpukhin V, Oğuz B, Min S, et al. Dense passage retrieval for open-domain question answering[J]. arXiv preprint arXiv:2004.04906, 2020.
