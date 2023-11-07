@@ -822,7 +822,7 @@ def train(args,data,datasets,model:PreTrainedModel,original_model,tokenizer:PreT
                 attributes_hiddens={key:value.expand(
                     target_layer_hiddens.size(0),1,value.size(1),value.size(2))for key,value in attributes_hiddens.items()}
         #it look like to define the global loss 
-        #L=a L(i)+B L(reg)
+        #L=a L(i)+B L(reg) 
         if 'neutral'==key:
             loss=0
             for attributes_hiddens in attributes_hiddens.values():

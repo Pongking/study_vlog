@@ -109,7 +109,7 @@ def main(args):
 
     for line in data:
         #load every line from data
-        netural_flag=True #中性词
+        netural_flag=True #netural_flag
         line=line.strip()
         if len(line)<1:
             continue
